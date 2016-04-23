@@ -20,7 +20,7 @@ There is no guarantee of anything.
 1. Clone this repo with the submodules.
 
   ```bash
-  $ git clone --recursive  https://github.com/mosop/crystal-edge.git /path/to/edge
+  $ git clone --recursive https://github.com/mosop/crystal-edge.git /path/to/edge
   ```
 
 1. cd & rake!
@@ -36,7 +36,7 @@ There is no guarantee of anything.
 $ rake crenv:install
 ```
 
-This makes a symlink into your crenv versions directory. The version's name is "edge".
+This makes a symlink into your crenv's versions directory. The version's name is "edge".
 
 ## License
 
