@@ -82,11 +82,11 @@ namespace :build do
   end
 
   task :release => :config do
-    run "rm -rf #{RELEACE_DIR}" if File.exist?(RELEACE_DIR)
+    run "rm -rf #{release_dir}" if File.exist?(release_dir)
     run "mkdir -p #{RELEACE_BIN_DIR}"
     run "make", chdir: CRYSTAL_DIR
     run "cp #{CRYSTAL_BIN} #{RELEACE_BIN_DIR}/"
-    CRYSTAL_COPY_OBJECTS.each{|i| run "cp -r #{CRYSTAL_DIR}/#{i} #{RELEACE_DIR}/"}
+    CRYSTAL_COPY_OBJECTS.each{|i| run "cp -r #{CRYSTAL_DIR}/#{i} #{release_dir}/"}
     run "git checkout #{SHARDS_TAG}", chdir: SHARDS_DIR
     run "make", chdir: SHARDS_DIR
     run "cp #{SHARDS_BIN} #{RELEACE_BIN_DIR}/"
