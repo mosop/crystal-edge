@@ -1,0 +1,6 @@
+[submodule "repo/crystal"]
+	path = repo/crystal
+	url = https://github.com/crystal-lang/crystal.git
+[submodule "repo/shards"]
+	path = repo/shards
+	url = https://github.com/crystal-lang/shards.git
