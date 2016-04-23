@@ -17,7 +17,7 @@ There is no guarantee of anything.
 
 ### Build
 
-1. Clone this repo with the submodules.
+1. Clone this repo with its submodules.
 
   ```bash
   $ git clone --recursive https://github.com/mosop/crystal-edge.git /path/to/edge
