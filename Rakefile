@@ -68,7 +68,6 @@ end
 
 namespace :build do
   task :config do
-    run "git fetch", chdir: CRYSTAL_DIR
     CRYSTAL_BIN = "#{CRYSTAL_DIR}/.build/crystal"
     CRYSTAL_COPY_OBJECTS = %w(etc src)
 
