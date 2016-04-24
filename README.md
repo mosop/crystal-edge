@@ -10,7 +10,7 @@ There is no guarantee of anything.
 
 * Crystal (latest, released)
 * Libraries for building Crystal (see https://github.com/crystal-lang/crystal/wiki/All-required-libraries)
-* make
+* Make
 * Rake
 
 ## Usage
