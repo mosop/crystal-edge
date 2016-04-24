@@ -68,6 +68,7 @@ end
 
 namespace :build do
   task :config do
+    run "git fetch", chdir: CRYSTAL_DIR
     CRYSTAL_BIN = "#{CRYSTAL_DIR}/.build/crystal"
     CRYSTAL_COPY_OBJECTS = %w(etc src)
 
@@ -83,6 +84,7 @@ namespace :build do
   task :release => :config do
     run "rm -rf #{release_dir}" if File.exist?(release_dir)
     run "mkdir -p #{RELEACE_BIN_DIR}"
+    run "git checkout origin/master", chdir: CRYSTAL_DIR
     run "make clean crystal", chdir: CRYSTAL_DIR
     run "cp #{CRYSTAL_BIN} #{RELEACE_BIN_DIR}/"
     CRYSTAL_COPY_OBJECTS.each{|i| run "cp -r #{CRYSTAL_DIR}/#{i} #{release_dir}/"}
