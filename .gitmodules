@@ -4,3 +4,4 @@
 [submodule "repo/shards"]
 	path = repo/shards
 	url = https://github.com/crystal-lang/shards.git
+	ignore = dirty
