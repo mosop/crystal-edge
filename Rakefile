@@ -97,6 +97,6 @@ end
 namespace :crenv do
   task :install do
     versions_dir = File.expand_path('../../versions', run("which crenv").strip)
-    run "ln -sf #{release_dir} #{versions_dir}/edge"
+    run "ln -nfs #{release_dir} #{versions_dir}/edge"
   end
 end
