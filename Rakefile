@@ -29,6 +29,7 @@ module Build
 
   ROOT_DIR = __dir__
   CRYSTAL_GIT_URL = "https://github.com/crystal-lang/crystal.git"
+  SHARDS_GIT_URL = "https://github.com/crystal-lang/shards.git"
   BDWGC_VERSION = "7_6_0"
   LIBATOMIC_OPS_VERSION = "7_4_4"
   EXT_DIR = File.join(ROOT_DIR, "ext")
@@ -129,12 +130,17 @@ module Build
     end
   end
 
-  def build
-    config_version
-    FileUtils.mkdir_p build_dir
-    if linux?
-      # build_bdwgc
+  def latest_shards_version
+    @latest_shards_version ||= begin
+      a = []
+      sh("git ls-remote --tags #{SHARDS_GIT_URL}").chomp.split("\n").each do |i|
+        a << Gem::Version.new($1) if /^refs\/tags\/v((?:\d+\.){0,2}\d+)$/ =~ i.split(/\s+/)[1]
+      end
+      a.sort.last.to_s
     end
+  end
+
+  def build_shards(debug: false)
     Dir.chdir(build_dir) do
       run "git init"
       run "git remote add origin #{CRYSTAL_GIT_URL}"
@@ -142,7 +148,36 @@ module Build
       run "git checkout #{commit}"
       env = {}
       env["CRYSTAL_CONFIG_VERSION"] ||= config_version
-      run env, "make stats=1 verbose=1"
+      run env, "make stats=1 verbose=1 release=#{debug ? 0 : 1}"
+    end
+  end
+
+  def build(debug: false)
+    FileUtils.mkdir_p build_dir
+    if linux?
+      # build_bdwgc
+    end
+    Dir.mktmpdir do |shards_dir|
+      Dir.chdir(shards_dir) do
+        run "git init"
+        run "git remote add origin #{SHARDS_GIT_URL}"
+        run "git fetch origin v#{latest_shards_version}"
+        run "git checkout FETCH_HEAD"
+        run "make"
+      end
+      shards_bin = File.join(shards_dir, "bin", "shards")
+      Dir.chdir(build_dir) do
+        run "git init"
+        run "git remote add origin #{CRYSTAL_GIT_URL}"
+        run "git fetch origin #{ref}"
+        run "git checkout #{commit}"
+        env = {}
+        env["CRYSTAL_CONFIG_VERSION"] ||= config_version
+        options = %w(stats verbose)
+        options << "release" unless debug
+        run env, "make #{options.map{|i| "#{i}=1"}}"
+      end
+      run "cp #{shards_bin} #{File.join(build_dir, "bin")}"
     end
     FileUtils.mkdir_p File.dirname(LAST_VERSION)
     run "ln -nfs #{build_dir} #{LAST_VERSION}"
@@ -170,8 +205,14 @@ namespace :build do
       build
     end
   end
+
+  task :debug do
+    build do
+      build debug: true
+    end
+  end
 end
-task :build => ["build:release"]
+task :build => ["build:debug"]
 
 namespace :crenv do
   task :install do
