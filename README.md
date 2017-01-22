@@ -1,15 +1,19 @@
 # crystal-edge
 
-A set of Rake tasks to build an edge (pre-released) version of Crystal.
+A set of Rake tasks for building edge (pre-released) versions of Crystal.
 
-## NO GUARANTEE
+## Supported Platforms
 
-There is no guarantee of anything.
+* OS X (tested on Yosemite)
+* Ubuntu (tested on 14.04)
+
+NOTE: It should works on some other Linux distributions but not tested.
 
 ## Required Environments
 
-* Crystal (latest, released)
-* Libraries for building Crystal (see https://github.com/crystal-lang/crystal/wiki/All-required-libraries)
+* Crystal (latest, released) (see https://crystal-lang.org/docs/installation/)
+* Installed Libraries (see https://github.com/crystal-lang/crystal/wiki/All-required-libraries)
+* Git
 * Make
 * Rake
 
@@ -17,26 +21,44 @@ There is no guarantee of anything.
 
 ### Build
 
-1. Clone this repo with its submodules.
+Clone this repository,
 
-  ```bash
-  $ git clone --recursive https://github.com/mosop/crystal-edge.git /path/to/edge
-  ```
+```sh
+$ git clone https://github.com/mosop/crystal-edge.git /path/to/crystal-edge
+```
 
-1. cd & rake!
+and rake!
 
-  ```bash
-  $ cd /path/to/edge
-  $ rake build:release
-  ```
+```sh
+$ cd /path/to/crystal-edge
+$ rake build
+```
+
+#### Specifying a Branch or Tag
+
+```sh
+$ CRYSTAL_EDGE_REF=0.20.5 rake build
+```
 
 ### Install (crenv)
 
-```bash
+After you build, do:
+
+```sh
 $ rake crenv:install
 ```
 
-This makes a symlink into your crenv's versions directory. The version's name is "edge".
+This makes a symlink into your crenv's versions directory. The default version's name is "edge".
+
+You can specify the name.
+
+```sh
+$ CRYSTAL_EDGE_VERSION_NAME=early rake crenv:install
+```
+
+### Clean
+
+See the versions directory (/path/to/crystal-edge/versions) and just remove underlying directories that you no longer need.
 
 ## License
 

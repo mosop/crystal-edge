@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker build -f `pwd`/dockerfiles/$1.Dockerfile -t mosop/crystal-edge-$1:latest .
